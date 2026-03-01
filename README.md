@@ -21,8 +21,6 @@ This project demonstrates foundational Data Engineering concepts using SQL.
 This project uses the **Brazilian Olist E-Commerce dataset** from [Kaggle](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce).  
 The dataset contains raw information about customers, orders, products, and payments.
 
-> **Note:** The full dataset is not included in this repository due to size.  
-> A small sample for testing purposes is included in the `sample_data/` folder.
 
 ---
 
