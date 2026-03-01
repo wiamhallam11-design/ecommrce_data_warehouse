@@ -20,7 +20,7 @@ This project helped me understand how raw transactional data can be transformed 
 Dataset
 
 This project uses the Brazilian Olist E-Commerce dataset from Kaggle:
-Olist E-Commerce Dataset
+Olist E-Commerce Dataset:https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce
 
 The dataset includes information about:
 
