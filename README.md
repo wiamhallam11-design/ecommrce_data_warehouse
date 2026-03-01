@@ -16,17 +16,27 @@ This project demonstrates foundational Data Engineering concepts using SQL.
 
 ---
 
+## Dataset
+
+This project uses the **Brazilian Olist E-Commerce dataset** from [Kaggle](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce).  
+The dataset contains raw information about customers, orders, products, and payments.
+
+> **Note:** The full dataset is not included in this repository due to size.  
+> A small sample for testing purposes is included in the `sample_data/` folder.
+
+---
+
 ## Architecture
 
 The project follows a layered architecture:
 
-1️ Raw Layer  
+1️ **Raw Layer**  
 Stores original data loaded directly from CSV files.
 
-2️ Staging / Clean Layer  
+2️ **Staging / Clean Layer**  
 Removes duplicates, handles nulls, enforces constraints.
 
-3️ Data Warehouse Layer  
+3️ **Data Warehouse Layer**  
 Implements a Star Schema with:
 
 - Fact table: `fact_orders`
@@ -38,7 +48,7 @@ Implements a Star Schema with:
 
 ---
 
-##  Database Schema
+## Database Schema
 
 ### Fact Table
 
@@ -72,46 +82,87 @@ Implements a Star Schema with:
 
 ---
 
-## Example Business Queries
+## Getting Started
 
-- Total revenue
-- Monthly revenue trend
-- Revenue by customer state
-- Average order value
+### Prerequisites
+- Install **Git**  
+- Install a **SQL database** (MySQL, PostgreSQL, or similar)  
+- Optional: VS Code with SQL extensions  
 
----
+### Steps to Run
+1. Clone this repository:
 
-## Tools Used
+```bash
+git clone https://github.com/wiamhallam11-design/ecommrce_data_warehouse.git
 
-- MySQL 8.0
-- MySQL Workbench
-- VS Code
-- Git & GitHub
+Open your SQL client or VS Code terminal.
 
----
+Run the SQL scripts in order:
 
-## Key Learnings
+create_tables.sql – creates the schema and tables
 
-- Data modeling (Star Schema)
-- Fact vs Dimension design
-- Aggregation logic
-- Foreign key constraints
-- Data cleaning techniques
-- Financial consistency validation
-- Real-world ETL simulation
+load_data.sql – loads the sample dataset
 
----
+queries.sql – example analytics queries
 
-## Future Improvements
+Inspect the results in your database.
 
-- Add indexing for performance
-- Implement stored procedures
-- Automate ETL workflow
-- Connect to BI tool (Power BI / Tableau)
-- Deploy to cloud database
+Example Business Queries
 
----
+Total revenue
 
-## Author
+SELECT SUM(order_total) AS total_revenue
+FROM fact_orders;
+
+Monthly revenue trend
+
+SELECT MONTH(order_date) AS month, SUM(order_total) AS monthly_revenue
+FROM fact_orders
+GROUP BY month
+ORDER BY month;
+
+Revenue by customer state
+
+Average order value
+
+Tools Used
+
+MySQL 8.0
+
+MySQL Workbench
+
+VS Code
+
+Git & GitHub
+
+Key Learnings
+
+Data modeling (Star Schema)
+
+Fact vs Dimension design
+
+Aggregation logic
+
+Foreign key constraints
+
+Data cleaning techniques
+
+Financial consistency validation
+
+Real-world ETL simulation
+
+Future Improvements
+
+Add indexing for performance
+
+Implement stored procedures
+
+Automate ETL workflow
+
+Connect to BI tool (Power BI / Tableau)
+
+Deploy to cloud database
+
+Author
 
 Built as a personal Data Engineering learning project.
