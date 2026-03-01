@@ -1,128 +1,139 @@
-# E-Commerce Data Warehouse Project (MySQL)
+E-Commerce Data Warehouse Project (MySQL)
+Project Overview
 
-## Project Overview
+This is my first Data Engineering project.
 
-This project builds a complete Data Warehouse using MySQL based on the Brazilian Olist E-Commerce dataset.
+In this project, I built a simple Data Warehouse in MySQL using the Brazilian Olist E-Commerce dataset. The goal was to practice core Data Engineering concepts such as:
 
-The goal of this project is to simulate a real-world Data Engineering workflow including:
+Loading raw data from CSV files
 
-- Raw data ingestion
-- Data validation & quality checks
-- Data cleaning & transformation
-- Star schema modeling
-- Analytical querying
+Cleaning and validating data
 
-This project demonstrates foundational Data Engineering concepts using SQL.
+Creating relational tables with primary and foreign keys
 
----
+Designing a dimensional model (star schema)
 
-## Dataset
+Writing analytical SQL queries
 
-This project uses the **Brazilian Olist E-Commerce dataset** from [Kaggle](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce).  
-The dataset contains raw information about customers, orders, products, and payments.
+This project helped me understand how raw transactional data can be transformed into a structure suitable for reporting and analysis.
 
+Dataset
 
----
+This project uses the Brazilian Olist E-Commerce dataset from Kaggle:
+Olist E-Commerce Dataset
 
-## Architecture
+The dataset includes information about:
 
-The project follows a layered architecture:
+Customers
 
-1️ **Raw Layer**  
-Stores original data loaded directly from CSV files.
+Orders
 
-2️ **Staging / Clean Layer**  
-Removes duplicates, handles nulls, enforces constraints.
+Order items
 
-3️ **Data Warehouse Layer**  
-Implements a Star Schema with:
+Products
 
-- Fact table: `fact_orders`
-- Dimension tables:
-  - `dim_customers`
-  - `dim_products`
-  - `dim_sellers`
-  - `dim_date`
+Payments
 
----
+Project Structure
 
-## Database Schema
+The project is organized into multiple SQL scripts to simulate a simple ETL workflow:
 
-### Fact Table
+01_create_database.sql – Create the database
 
-`fact_orders`
+02_create_raw_tables.sql – Define raw tables to load CSVs
 
-- order_id
-- customer_id
-- order_date
-- order_status
-- total_items_amount
-- total_freight
-- order_total
-- total_payment
+03_load_raw_data.sql – Load raw CSV data into raw tables
 
-### Dimension Tables
+04_data_quality_checks.sql – Perform validations on raw data
 
-- dim_customers
-- dim_products
-- dim_sellers
-- dim_date
+05_create_clean_tables.sql – Clean data and remove duplicates
 
----
+06_create_dimensions.sql – Create dimension tables (dim_customers, dim_products, dim_sellers, dim_date)
 
-## Data Quality Checks Implemented
+07_create_fact_table.sql – Create fact tables (fact_orders, fact_order_items)
 
-✔ Null value detection  
-✔ Duplicate detection  
-✔ Referential integrity validation  
-✔ Business logic validation (delivery date checks)  
-✔ Financial reconciliation (order_total vs payment_total)
+08_add_constraints.sql – Add primary and foreign key constraints
 
----
+09_business_queries.sql – Write analytical queries
 
-## Getting Started
+The scripts are designed to be executed in order.
 
-### Prerequisites
-- Install **Git**  
-- Install a **SQL database** (MySQL, PostgreSQL, or similar)  
-- Optional: VS Code with SQL extensions  
+Architecture
 
-### Steps to Run
-1. Clone this repository:
+I used a layered approach:
 
-```bash
-git clone https://github.com/wiamhallam11-design/ecommrce_data_warehouse.git
+1. Raw Layer
 
-Open your SQL client or VS Code terminal.
+Loads the original CSV data into raw tables.
 
-Run the SQL scripts in order:
+2. Clean Layer
 
-create_tables.sql – creates the schema and tables
+Removes duplicates, handles null values, and creates structured relational tables.
 
-load_data.sql – loads the sample dataset
+3. Data Warehouse Layer
 
-queries.sql – example analytics queries
+Implements a star schema with:
 
-Inspect the results in your database.
+Fact Tables
 
-Example Business Queries
+fact_orders – one row per order
 
-Total revenue
+fact_order_items – one row per order item (links orders to products and sellers)
+
+Dimension Tables
+
+dim_customers
+
+dim_products
+
+dim_sellers
+
+dim_date
+
+This design allows analyses such as revenue by month, revenue by state, and average order value.
+
+Data Quality Checks
+
+Some of the validations implemented:
+
+Checking for null values in critical columns
+
+Detecting duplicate records
+
+Validating foreign key relationships
+
+Comparing order totals with payment totals
+
+Checking delivery dates for logical consistency
+
+Example Queries
+
+Total Revenue
 
 SELECT SUM(order_total) AS total_revenue
 FROM fact_orders;
 
-Monthly revenue trend
+Monthly Revenue
 
-SELECT MONTH(order_date) AS month, SUM(order_total) AS monthly_revenue
-FROM fact_orders
-GROUP BY month
-ORDER BY month;
+SELECT d.year, d.month, SUM(f.order_total) AS revenue
+FROM fact_orders f
+JOIN dim_date d ON f.order_date = d.date_id
+GROUP BY d.year, d.month
+ORDER BY d.year, d.month;
 
-Revenue by customer state
+Top 5 States by Revenue
 
-Average order value
+SELECT c.customer_state, SUM(f.order_total) AS revenue
+FROM fact_orders f
+JOIN dim_customers c ON f.customer_id = c.customer_id
+GROUP BY c.customer_state
+ORDER BY revenue DESC
+LIMIT 5;
 
+Average Order Value
+
+SELECT AVG(order_total) AS avg_order_value
+FROM fact_orders;
 Tools Used
 
 MySQL 8.0
@@ -133,34 +144,34 @@ VS Code
 
 Git & GitHub
 
-Key Learnings
+What I Learned
 
-Data modeling (Star Schema)
+Through this project, I learned:
 
-Fact vs Dimension design
+The difference between raw, clean, and warehouse layers
 
-Aggregation logic
+How fact tables and dimension tables work
 
-Foreign key constraints
+The importance of defining the correct data grain
 
-Data cleaning techniques
+How to use foreign key constraints
 
-Financial consistency validation
+How to validate financial data using SQL
 
-Real-world ETL simulation
+How to structure a SQL project in a clear, organized way
 
 Future Improvements
 
 Add indexing for performance
 
-Implement stored procedures
+Automate the ETL process
 
-Automate ETL workflow
+Connect the warehouse to a BI tool
 
-Connect to BI tool (Power BI / Tableau)
+Deploy the database to the cloud
 
-Deploy to cloud database
+Explore handling multi-product orders in fact tables more efficiently
 
 Author
 
-Built as a personal Data Engineering learning project.
+This project was built as part of my learning journey into Data Engineering.
